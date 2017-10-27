@@ -1,6 +1,6 @@
 {
   "name": "elearning-player-bridge",
-  "version": "1.0.0",
+  "version": "0.0.042",
   "description": "A bridge class to communicate with the elearning-player!",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -20,5 +20,15 @@
   "bugs": {
     "url": "https://github.com/RicardoLimaDev/elearning-player-bridge/issues"
   },
-  "homepage": "https://github.com/RicardoLimaDev/elearning-player-bridge#readme"
+  "homepage": "https://github.com/RicardoLimaDev/elearning-player-bridge#readme",
+  "dependencies": {
+    "@types/createjs": "0.0.29",
+    "@types/greensock": "^1.15.32",
+    "@types/preloadjs": "^0.6.32",
+    "@types/soundjs": "^0.6.27",
+    "createjs": "^1.0.1",
+    "createjs-preloadjs": "^0.6.3",
+    "createjs-soundjs": "^0.6.2",
+    "gsap": "^1.20.3"
+  }
 }
