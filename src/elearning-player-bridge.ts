@@ -9,6 +9,11 @@ export class ElearningPlayerBridge
     public static ON_LOAD_PROGRESS:string = "on_load_progress";
     public static ON_SUBTITLE:string = "on_subtitle";
 
+    public static ON_SOUND_VOLUME_CHANGE:string = "on_sound_volume_change";
+    public static ON_SOUND_STATE_CHANGE:string = "on_sound_state_change";
+    public static ON_SOUND_DESTROY:string = "on_sound_destroy";
+
+
     /**
     * @property player
     * @type {any}
@@ -42,7 +47,7 @@ export class ElearningPlayerBridge
     * @type {createjs.AbstractSoundInstance}
     * @public
     */
-    public _sound: createjs.AbstractSoundInstance;
+    private _sound: createjs.AbstractSoundInstance;
 
     /**
     * @property _subtitle
@@ -65,6 +70,13 @@ export class ElearningPlayerBridge
     */
     public events:any;
 
+    /**
+    * @property volume
+    * @type {number}
+    * @public
+    */
+    public volume:number;
+
     constructor(assetsManifest?:string[])
     {
         //console.log("[ElearningPlayerBridge] constructor");
@@ -73,6 +85,8 @@ export class ElearningPlayerBridge
 
         //events list
         this.events = {};
+
+        this.volume = 1;
     }
     /**
      * Start assets loading (TODO: add more initializations)
@@ -87,11 +101,16 @@ export class ElearningPlayerBridge
     {
         this.onReady();
 
-        //holding all page animations on a timeline
-        this.timeline = (<any>window).TimelineLite ? (<any>window).TimelineLite.exportRoot() : null;
+        this.updateTimelineInstance();
 
         //ao iniciar a página, seta o status para "playing";
         this.playing = true;        
+    }
+
+    private updateTimelineInstance = ():void=>
+    {
+        //holding all page animations on a timeline
+        this.timeline = (<any>window).TimelineLite ? (<any>window).TimelineLite.exportRoot() : null;
     }
 
     public get sound():createjs.AbstractSoundInstance 
@@ -120,7 +139,8 @@ export class ElearningPlayerBridge
     public playSound = (id:string):void =>
     {
         this.sound = createjs.Sound.play(id);
-        //console.log("[ElearningPlayerBridge] playSound", this.sound);
+        this.sound.volume = this.volume;
+        this.dispatchEventWith(ElearningPlayerBridge.ON_SOUND_STATE_CHANGE);
     }
 
     /**
@@ -130,6 +150,7 @@ export class ElearningPlayerBridge
     {
         //console.log("[ElearningPlayerBridge] setSubtitle");
         this.subtitle = value;
+        this.dispatchEventWith(ElearningPlayerBridge.ON_SUBTITLE, value);
     }
 
     /**
@@ -167,10 +188,12 @@ export class ElearningPlayerBridge
      */
     public toggleVolume = ():void =>
     {
-        console.log("[ElearningPlayerBridge] toggleVolume");
+        //console.log("[ElearningPlayerBridge] toggleVolume");
         if(this.sound) 
         {
             this.sound.volume = this.sound.volume == 1 ? 0 : 1;
+            this.volume = this.sound.volume;
+            this.dispatchEventWith(ElearningPlayerBridge.ON_SOUND_VOLUME_CHANGE);
         }
     }
 
@@ -182,7 +205,11 @@ export class ElearningPlayerBridge
         //console.log("[ElearningPlayerBridge] resume");
 
         if(this.timeline) this.timeline.resume();
-        if(this.sound) this.sound.paused = false;
+        if(this.sound)
+        {
+            this.sound.paused = false;
+            this.dispatchEventWith(ElearningPlayerBridge.ON_SOUND_STATE_CHANGE);
+        } 
         this.playing = true;
     }
 
@@ -193,8 +220,14 @@ export class ElearningPlayerBridge
     {
         //console.log("[ElearningPlayerBridge] pause");
 
+        this.updateTimelineInstance();
+
         if(this.timeline) this.timeline.pause();
-        if(this.sound) this.sound.paused = true;
+        if(this.sound) 
+        {
+            this.sound.paused = true;
+            this.dispatchEventWith(ElearningPlayerBridge.ON_SOUND_STATE_CHANGE);
+        }
         this.playing = false;
     }
 
@@ -206,7 +239,11 @@ export class ElearningPlayerBridge
         this.subtitle = "";
         this.playing = false;
         
-        if(this.sound) this.sound.destroy();
+        if(this.sound) 
+        {
+            this.sound.destroy();
+            this.dispatchEventWith(ElearningPlayerBridge.ON_SOUND_DESTROY);
+        }
         if(this.timeline) this.timeline.clear();
         if(this.preload) this.preload.destroy();
     }
@@ -216,9 +253,7 @@ export class ElearningPlayerBridge
      */
     public load = ():void =>
     {
-        //console.log("[ElearningPlayerBridge] load");
-
-        if(this.manifest)
+        if(this.manifest && this.manifest.length > 0)
         {
             this.preload = new createjs.LoadQueue(true, "./assets/");
             this.preload.installPlugin(createjs.Sound); 
@@ -230,7 +265,6 @@ export class ElearningPlayerBridge
         }
         else
         {
-            //console.log("[ElearningPlayerBridge] load - no manifest");
             //Informa sobre o carregamento;
             this.dispatchEventWith(ElearningPlayerBridge.ON_LOAD_PROGRESS, 1);
             //this.init();
@@ -309,13 +343,13 @@ export class ElearningPlayerBridge
         // Check if the callback is not a function
         if (typeof callback !== 'function') 
         {
-            console.error(`The listener callback must be a function, the given type is ${typeof callback}`);
+            console.log(`The listener callback must be a function, the given type is ${typeof callback}`);
             return;
         }
         // Check if the event is not a string
         if (typeof event !== 'string') 
         {
-            console.error(`The event name must be a string, the given type is ${typeof event}`);
+            console.log(`The event name must be a string, the given type is ${typeof event}`);
             return;
         }
             
@@ -333,7 +367,7 @@ export class ElearningPlayerBridge
         // Check if this event not exists
         if (this.events[event] === undefined) 
         {
-            console.error(`This event: ${event} does not exist`);
+            console.log(`This event: ${event} does not exist`);
             return;
         }
             
@@ -350,7 +384,7 @@ export class ElearningPlayerBridge
         // Check if this event not exists
         if (this.events[event] === undefined) 
         {
-            console.error(`This event: ${event} does not exist`);
+            console.log(`This event: ${event} does not exist`);
             return;
         }
 
