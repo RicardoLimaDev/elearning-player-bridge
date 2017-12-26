@@ -1,6 +1,6 @@
 {
   "name": "elearning-player-bridge",
-  "version": "0.0.045",
+  "version": "0.0.046",
   "description": "A bridge class to communicate with the elearning-player!",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

@@ -8,6 +8,8 @@ export class ElearningPlayerBridge
     public static ON_READY:string = "on_ready";
     public static ON_LOAD_PROGRESS:string = "on_load_progress";
     public static ON_SUBTITLE:string = "on_subtitle";
+    public static ON_RESUME:string = "on_resume";
+    public static ON_PAUSE:string = "on_pause";
 
     public static ON_SOUND_VOLUME_CHANGE:string = "on_sound_volume_change";
     public static ON_SOUND_STATE_CHANGE:string = "on_sound_state_change";
@@ -211,6 +213,8 @@ export class ElearningPlayerBridge
             this.dispatchEventWith(ElearningPlayerBridge.ON_SOUND_STATE_CHANGE);
         } 
         this.playing = true;
+
+        this.dispatchEventWith(ElearningPlayerBridge.ON_RESUME);
     }
 
     /**
@@ -229,6 +233,8 @@ export class ElearningPlayerBridge
             this.dispatchEventWith(ElearningPlayerBridge.ON_SOUND_STATE_CHANGE);
         }
         this.playing = false;
+
+        this.dispatchEventWith(ElearningPlayerBridge.ON_PAUSE);
     }
 
     /**
