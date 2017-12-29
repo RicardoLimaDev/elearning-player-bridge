@@ -79,6 +79,14 @@ export class ElearningPlayerBridge
     */
     public volume:number;
 
+    /**
+    * @property deviceInfo
+    * @type {any}
+    * @public
+    */
+    public deviceInfo:any;
+    
+
     constructor(assetsManifest?:string[])
     {
         //console.log("[ElearningPlayerBridge] constructor");
@@ -323,8 +331,7 @@ export class ElearningPlayerBridge
         if(this.preload.progress < 1)
         {
             this.dispatchEventWith(ElearningPlayerBridge.ON_LOAD_PROGRESS, this.preload.progress);
-        }
-        
+        }        
     }
 
     // An error happened on a file
