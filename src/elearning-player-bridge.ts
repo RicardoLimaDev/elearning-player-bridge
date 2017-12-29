@@ -106,7 +106,7 @@ export class ElearningPlayerBridge
         this.updateTimelineInstance();
 
         //ao iniciar a página, seta o status para "playing";
-        this.playing = true;        
+        this.playing = true;
     }
 
     private updateTimelineInstance = ():void=>
@@ -227,7 +227,7 @@ export class ElearningPlayerBridge
         this.updateTimelineInstance();
 
         if(this.timeline) this.timeline.pause();
-        if(this.sound) 
+        if(this.sound)
         {
             this.sound.paused = true;
             this.dispatchEventWith(ElearningPlayerBridge.ON_SOUND_STATE_CHANGE);
@@ -261,7 +261,7 @@ export class ElearningPlayerBridge
     {
         if(this.manifest && this.manifest.length > 0)
         {
-            this.preload = new createjs.LoadQueue(true, "./assets/");
+            this.preload = new createjs.LoadQueue(true);
             this.preload.installPlugin(createjs.Sound); 
             this.preload.on("fileload", this.handleFileLoad);
             this.preload.on("progress", this.handleOverallProgress);
