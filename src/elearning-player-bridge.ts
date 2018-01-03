@@ -5,6 +5,7 @@
 
 export class ElearningPlayerBridge 
 {
+    public static ON_START:string = "on_start";
     public static ON_READY:string = "on_ready";
     public static ON_LOAD_PROGRESS:string = "on_load_progress";
     public static ON_SUBTITLE:string = "on_subtitle";
@@ -14,7 +15,6 @@ export class ElearningPlayerBridge
     public static ON_SOUND_VOLUME_CHANGE:string = "on_sound_volume_change";
     public static ON_SOUND_STATE_CHANGE:string = "on_sound_state_change";
     public static ON_SOUND_DESTROY:string = "on_sound_destroy";
-
 
     /**
     * @property player
@@ -85,6 +85,13 @@ export class ElearningPlayerBridge
     * @public
     */
     public deviceInfo:any;
+
+    /**
+    * @property initiated
+    * @type {boolean}
+    * @public
+    */
+    public initiated:boolean;
     
 
     constructor(assetsManifest?:string[])
@@ -97,6 +104,8 @@ export class ElearningPlayerBridge
         this.events = {};
 
         this.volume = 1;
+
+        this.playing = false;
     }
     /**
      * Start assets loading (TODO: add more initializations)
@@ -104,6 +113,7 @@ export class ElearningPlayerBridge
     public start = ():void =>
     {
         //console.log("[ElearningPlayerBridge] start");
+        this.dispatchEventWith(ElearningPlayerBridge.ON_START);
         this.load();
     }
 
@@ -112,9 +122,6 @@ export class ElearningPlayerBridge
         this.onReady();
 
         this.updateTimelineInstance();
-
-        //ao iniciar a página, seta o status para "playing";
-        this.playing = true;
     }
 
     private updateTimelineInstance = ():void=>
@@ -178,9 +185,9 @@ export class ElearningPlayerBridge
     /**
      * Page status toggle
      */
-    public togglePlayPause = ():void =>
+    public togglePlayPause = (context?:any):void =>
     {
-        //console.log("[ElearningPlayerBridge] togglePlayPause");
+        console.log("[ElearningPlayerBridge] togglePlayPause - this.playing", this.playing);
 
         //TODO: pausar o som;
         if( this.playing )
@@ -213,13 +220,23 @@ export class ElearningPlayerBridge
     public resume = ():void =>
     {
         //console.log("[ElearningPlayerBridge] resume");
+        if(!this.initiated)
+        {
+            this.initiated = true;
+            this.init();
+        }
 
-        if(this.timeline) this.timeline.resume();
+        if(this.timeline) 
+        {
+            this.timeline.resume();
+        }
+
         if(this.sound)
         {
             this.sound.paused = false;
             this.dispatchEventWith(ElearningPlayerBridge.ON_SOUND_STATE_CHANGE);
-        } 
+        }
+
         this.playing = true;
 
         this.dispatchEventWith(ElearningPlayerBridge.ON_RESUME);
@@ -271,7 +288,7 @@ export class ElearningPlayerBridge
         {
             this.preload = new createjs.LoadQueue(true);
             this.preload.installPlugin(createjs.Sound); 
-            this.preload.on("fileload", this.handleFileLoad);
+            this.preload.on("fileload", this.handleFileLoad );
             this.preload.on("progress", this.handleOverallProgress);
             this.preload.on("error", this.handleFileError);
 
@@ -281,7 +298,6 @@ export class ElearningPlayerBridge
         {
             //Informa sobre o carregamento;
             this.dispatchEventWith(ElearningPlayerBridge.ON_LOAD_PROGRESS, 1);
-            //this.init();
         }
     }
 
@@ -300,9 +316,11 @@ export class ElearningPlayerBridge
     // File complete handler
     public handleFileLoad = (event):void =>
     {
-        //console.log("file loaded: ", event.item.id);
-        var item = event.item;
 
+        /*
+        console.log("file loaded: ", event.item.id);
+
+        var item = event.item;
         switch (item.type) 
         {
             case "sound":
@@ -311,8 +329,8 @@ export class ElearningPlayerBridge
             case "image":
             break;
         }
-
-        //console.log("file loaded result: ", event.result);
+        console.log("file loaded result: ", event.result);
+        */
         
         if(this.preload.progress >= 1)
         {
