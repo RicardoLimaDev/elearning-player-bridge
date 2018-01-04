@@ -185,7 +185,7 @@ export class ElearningPlayerBridge
     /**
      * Page status toggle
      */
-    public togglePlayPause = (context?:any):void =>
+    public togglePlayPause = ():void =>
     {
         console.log("[ElearningPlayerBridge] togglePlayPause - this.playing", this.playing);
 
