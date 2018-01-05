@@ -187,7 +187,7 @@ export class ElearningPlayerBridge
      */
     public togglePlayPause = ():void =>
     {
-        console.log("[ElearningPlayerBridge] togglePlayPause - this.playing", this.playing);
+        //console.log("[ElearningPlayerBridge] togglePlayPause - this.playing", this.playing);
 
         //TODO: pausar o som;
         if( this.playing )
@@ -398,7 +398,7 @@ export class ElearningPlayerBridge
         // Check if this event not exists
         if (this.events[event] === undefined) 
         {
-            console.log(`This event: ${event} does not exist`);
+            //console.log(`This event: ${event} does not exist`);
             return;
         }
             
@@ -415,7 +415,7 @@ export class ElearningPlayerBridge
         // Check if this event not exists
         if (this.events[event] === undefined) 
         {
-            console.log(`This event: ${event} does not exist`);
+            //console.log(`This event: ${event} does not exist`);
             return;
         }
 
