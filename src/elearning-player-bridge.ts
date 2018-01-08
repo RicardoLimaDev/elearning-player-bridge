@@ -11,6 +11,8 @@ export class ElearningPlayerBridge
     public static ON_SUBTITLE:string = "on_subtitle";
     public static ON_RESUME:string = "on_resume";
     public static ON_PAUSE:string = "on_pause";
+    public static ON_PAGE_FORWARD:string = "on_page_forward";
+    public static ON_PAGE_BACKWARD:string = "on_page_backward";
 
     public static ON_SOUND_VOLUME_CHANGE:string = "on_sound_volume_change";
     public static ON_SOUND_STATE_CHANGE:string = "on_sound_state_change";
@@ -122,6 +124,16 @@ export class ElearningPlayerBridge
         this.onReady();
 
         this.updateTimelineInstance();
+    }
+
+    public setPageForward = ():void =>
+    {
+        this.dispatchEventWith(ElearningPlayerBridge.ON_PAGE_FORWARD);
+    }
+
+    public setPageBackward = ():void =>
+    {
+        this.dispatchEventWith(ElearningPlayerBridge.ON_PAGE_BACKWARD);
     }
 
     private updateTimelineInstance = ():void=>
