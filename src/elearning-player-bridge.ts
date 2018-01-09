@@ -13,6 +13,7 @@ export class ElearningPlayerBridge
     public static ON_PAUSE:string = "on_pause";
     public static ON_PAGE_FORWARD:string = "on_page_forward";
     public static ON_PAGE_BACKWARD:string = "on_page_backward";
+    public static ON_PAGE_CONTENT_COMPLETE:string = "on_page_content_complete";
 
     public static ON_SOUND_VOLUME_CHANGE:string = "on_sound_volume_change";
     public static ON_SOUND_STATE_CHANGE:string = "on_sound_state_change";
@@ -119,21 +120,37 @@ export class ElearningPlayerBridge
         this.load();
     }
 
+    /**
+    * Dispatch ON_READY event and set the TimelineMax instance;
+    */
     public init = ():void =>
     {
         this.onReady();
-
         this.updateTimelineInstance();
     }
 
+    /**
+    * Dispatch ON_PAGE_FORWARD event;
+    */
     public setPageForward = ():void =>
     {
         this.dispatchEventWith(ElearningPlayerBridge.ON_PAGE_FORWARD);
     }
 
+    /**
+    * Dispatch ON_PAGE_BACKWARD event;
+    */
     public setPageBackward = ():void =>
     {
         this.dispatchEventWith(ElearningPlayerBridge.ON_PAGE_BACKWARD);
+    }
+
+    /**
+    * Dispatch ON_PAGE_CONTENT_COMPLETE event;
+    */
+    public setPageContentComplete = ():void =>
+    {
+        this.dispatchEventWith(ElearningPlayerBridge.ON_PAGE_CONTENT_COMPLETE);
     }
 
     private updateTimelineInstance = ():void=>
@@ -141,30 +158,10 @@ export class ElearningPlayerBridge
         //holding all page animations on a timeline
         this.timeline = (<any>window).TimelineLite ? (<any>window).TimelineLite.exportRoot() : null;
     }
-
-    public get sound():createjs.AbstractSoundInstance 
-    {
-        return this._sound;
-    }
-
-    public set sound(value:createjs.AbstractSoundInstance)
-    {
-        this._sound = value;
-    }
-
-    public get subtitle():string 
-    {
-        return this._subtitle;
-    }
-
-    public set subtitle(value:string)
-    {
-        this._subtitle = value;
-    }
     
     /**
-     * Play sounds based on id
-     */
+    * Play sounds based on id
+    */
     public playSound = (id:string):void =>
     {
         this.sound = createjs.Sound.play(id);
@@ -173,8 +170,8 @@ export class ElearningPlayerBridge
     }
 
     /**
-     * Play sounds based on id
-     */
+    * Play sounds based on id
+    */
     public setSubtitle = (value:string):void =>
     {
         //console.log("[ElearningPlayerBridge] setSubtitle");
@@ -328,7 +325,6 @@ export class ElearningPlayerBridge
     // File complete handler
     public handleFileLoad = (event):void =>
     {
-
         /*
         console.log("file loaded: ", event.item.id);
 
@@ -379,6 +375,27 @@ export class ElearningPlayerBridge
     {
         this._manifest = value;
     }
+
+    public get sound():createjs.AbstractSoundInstance 
+    {
+        return this._sound;
+    }
+
+    public set sound(value:createjs.AbstractSoundInstance)
+    {
+        this._sound = value;
+    }
+
+    public get subtitle():string 
+    {
+        return this._subtitle;
+    }
+
+    public set subtitle(value:string)
+    {
+        this._subtitle = value;
+    }
+    
 
     //EVENT DISPATCHER
     public addEventListener = (event:string, callback:Function):void =>
