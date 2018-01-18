@@ -14,6 +14,7 @@ export class ElearningPlayerBridge
     public static ON_PAGE_FORWARD:string = "on_page_forward";
     public static ON_PAGE_BACKWARD:string = "on_page_backward";
     public static ON_PAGE_CONTENT_COMPLETE:string = "on_page_content_complete";
+    public static ON_PAGE_SET_SCORE:string = "on_page_set_score";
 
     public static ON_SOUND_VOLUME_CHANGE:string = "on_sound_volume_change";
     public static ON_SOUND_STATE_CHANGE:string = "on_sound_state_change";
@@ -153,6 +154,17 @@ export class ElearningPlayerBridge
         this.dispatchEventWith(ElearningPlayerBridge.ON_PAGE_CONTENT_COMPLETE);
     }
 
+    /**
+    * Dispatch ON_PAGE_SET_SCORE event;
+    */
+    public setPageScore = (value:number):void =>
+    {
+        this.dispatchEventWith(ElearningPlayerBridge.ON_PAGE_SET_SCORE, {score:value});
+    }
+
+    /**
+    * To keep the timeline instance always in sync with all the TimelineLite/TweenMax instances;
+    */
     private updateTimelineInstance = ():void=>
     {
         //holding all page animations on a timeline
