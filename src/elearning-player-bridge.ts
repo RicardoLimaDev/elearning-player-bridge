@@ -16,6 +16,16 @@ export class ElearningPlayerBridge
     public static ON_PAGE_CONTENT_COMPLETE:string = "on_page_content_complete";
     public static ON_PAGE_SET_SCORE:string = "on_page_set_score";
 
+    public static ON_PAGE_SET_INTERACTION_ID:string = "on_page_set_interaction_id";
+    public static ON_PAGE_SET_INTERACTION_CORRECT_RESPONSE:string = "on_page_set_interaction_correct_response";
+    public static ON_PAGE_SET_INTERACTION_RESULT:string = "on_page_set_interaction_result";
+    public static ON_PAGE_SET_INTERACTION_STUDENT_RESPONSE:string = "on_page_set_interaction_student_response";
+    public static ON_PAGE_SET_INTERACTION_TYPE:string = "on_page_set_interaction_type";
+    public static ON_PAGE_SET_INTERACTION_LATENCY:string = "on_page_set_interaction_latency";
+    public static ON_PAGE_SET_INTERACTION_TIME:string = "on_page_set_interaction_time";
+    public static ON_PAGE_SET_INTERACTION_OBJECTIVES:string = "on_page_set_interaction_objectives";
+    public static ON_PAGE_SET_INTERACTION_WEIGHT:string = "on_page_set_interaction_weight";
+
     public static ON_SOUND_VOLUME_CHANGE:string = "on_sound_volume_change";
     public static ON_SOUND_STATE_CHANGE:string = "on_sound_state_change";
     public static ON_SOUND_DESTROY:string = "on_sound_destroy";
@@ -161,6 +171,105 @@ export class ElearningPlayerBridge
     {
         this.dispatchEventWith(ElearningPlayerBridge.ON_PAGE_SET_SCORE, {score:value});
     }
+
+    /**
+    * Dispatch ON_PAGE_SET_INTERACTION_ID event;
+    */
+    public setInteractionId = (n:number, value:string):void =>
+    {
+        var data:any={};
+        data.n = n;
+        data.data = value;
+        this.dispatchEventWith(ElearningPlayerBridge.ON_PAGE_SET_INTERACTION_ID, data);
+    }
+
+    /**
+    * Dispatch ON_PAGE_SET_INTERACTION_CORRECT_RESPONSE event;
+    */
+    public setInteractionCorrectResponse = (n:number, value:string):void =>
+    {
+        var data:any={};
+        data.n = n;
+        data.data = value;
+        this.dispatchEventWith(ElearningPlayerBridge.ON_PAGE_SET_INTERACTION_CORRECT_RESPONSE, data);
+    }
+
+    /**
+    * Dispatch ON_PAGE_SET_INTERACTION_RESULT event;
+    */
+    public setInteractioResult = (n:number, value:string):void =>
+    {
+        var data:any={};
+        data.n = n;
+        data.data = value;
+        this.dispatchEventWith(ElearningPlayerBridge.ON_PAGE_SET_INTERACTION_RESULT, data);
+    }
+
+    /**
+    * Dispatch ON_PAGE_SET_INTERACTION_STUDENT_RESPONSE event;
+    */
+    public setInteractionStudentResponse = (n:number, value:string):void =>
+    {
+        var data:any={};
+        data.n = n;
+        data.data = value;
+        this.dispatchEventWith(ElearningPlayerBridge.ON_PAGE_SET_INTERACTION_STUDENT_RESPONSE, data);
+    }
+
+    /**
+    * Dispatch ON_PAGE_SET_INTERACTION_TYPE event;
+    */
+    public setInteractionType = (n:number, value:string):void =>
+    {
+        var data:any={};
+        data.n = n;
+        data.data = value;
+        this.dispatchEventWith(ElearningPlayerBridge.ON_PAGE_SET_INTERACTION_TYPE, data);
+    }
+
+    /**
+    * Dispatch ON_PAGE_SET_INTERACTION_LATENCY event;
+    */
+    public setInteractionLatency = (n:number, value:string):void =>
+    {
+        var data:any={};
+        data.n = n;
+        data.data = value;
+        this.dispatchEventWith(ElearningPlayerBridge.ON_PAGE_SET_INTERACTION_LATENCY, data);
+    }
+
+    /**
+    * Dispatch ON_PAGE_SET_INTERACTION_TIME event;
+    */
+    public setInteractionTime = (n:number, value:string):void =>
+    {
+        var data:any={};
+        data.n = n;
+        data.data = value;
+        this.dispatchEventWith(ElearningPlayerBridge.ON_PAGE_SET_INTERACTION_TIME, data);
+    }
+
+    /**
+    * Dispatch ON_PAGE_SET_INTERACTION_OBJECTIVES event;
+    */
+    public setInteractionObjectives = (n:number, value:string):void =>
+    {
+        var data:any={};
+        data.n = n;
+        data.data = value;
+        this.dispatchEventWith(ElearningPlayerBridge.ON_PAGE_SET_INTERACTION_OBJECTIVES, data);
+    }
+
+    /**
+    * Dispatch ON_PAGE_SET_INTERACTION_WEIGHT event;
+    */
+    public setInteractionWeight = (n:number, value:string):void =>
+    {
+        var data:any={};
+        data.n = n;
+        data.data = value;
+        this.dispatchEventWith(ElearningPlayerBridge.ON_PAGE_SET_INTERACTION_WEIGHT, data);
+    }    
 
     /**
     * To keep the timeline instance always in sync with all the TimelineLite/TweenMax instances;
